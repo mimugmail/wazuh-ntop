@@ -1,0 +1,15 @@
+<!--
+  -  ntopng decoder
+  -  Author: Michael Muenz
+  -  Copyright (C) 2025, m.a.x. Informationstechnologie AG
+  -  The decoders and rules is a free software; you can redistribute it and/or modify it under the terms of GPLv3.
+-->
+
+<decoder name="ntopng">
+    <program_name>ntopng</program_name>
+</decoder>
+
+<decoder name="ntopng_child">
+    <parent>ntopng</parent>
+    <plugin_decoder>JSON_Decoder</plugin_decoder>
+</decoder>
