@@ -6,11 +6,13 @@ Here you will find decoders and rules to integrate ntopng (via Syslog) into Wazu
 The decoders and rules work with with either text or ECS log format, please only install one of them:
 
 TEXT:
+
 wget https://raw.githubusercontent.com/mimugmail/wazuh-ntop/refs/heads/main/rules/ntopng_text_rules.xml -o /var/ossec/etc/rules/ntopng_text_rules.xml
 
 wget https://raw.githubusercontent.com/mimugmail/wazuh-ntop/refs/heads/main/decoders/ntopng_text_decoder.xml -o /var/ossec/etc/decoders/ntopng_text_decoder.xml
 
 ECS:
+
 wget https://raw.githubusercontent.com/mimugmail/wazuh-ntop/refs/heads/main/rules/ntopng_ecs_rules.xml -o /var/ossec/etc/rules/ntopng_ecs_rules.xml
 
 wget https://raw.githubusercontent.com/mimugmail/wazuh-ntop/refs/heads/main/decoders/ntopng_json_decoder.xml -o /var/ossec/etc/decoders/ntopng_json_decoder.xml
