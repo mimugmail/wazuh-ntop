@@ -1,0 +1,69 @@
+<!--
+  -  ntopng decoder
+  -  Author: Michael Muenz
+  -  Copyright (C) 2025, m.a.x. Informationstechnologie AG
+  -  The decoders and rules is a free software; you can redistribute it and/or modify it under the terms of GPLv3.
+-->
+
+<decoder name="ntopng">
+    <program_name>ntopng</program_name>
+</decoder>
+
+<!--
+Nov  1 17:58:07 80.151.56.127 ntopng[57859]:  [2024-11-01T16:58:07Z]  [Interface: pppoe0] [Severity: Notice] [Flow] [Low Goodput Ratio] [80.151.56.127:19165 -> 172.217.23.97:443]  Low goodput ratio [24.16%]
+-->
+<decoder name="ntopng-type1">
+  <parent>ntopng</parent>
+  <prematch>.\w+:\d+ -> </prematch>
+  <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Interface: (\.+)] [Severity: (\w+)] [(\w+)] [(\.+)] [(\.+):(\d+) -> (\.+):(\d+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,iface,severity,type,risk,srcip,srcport,dstip,dstport,log</order>
+</decoder>
+<!--
+Nov  1 17:58:44 80.151.56.127 ntopng[57859]:  [2024-11-01T16:58:43Z]  [Interface: tcp://*:5556c] [Severity: Notice] [Flow] [Malformed packet] [65.108.248.184 -> 192.168.2.172]
+-->
+<decoder name="ntopng-type2">
+  <parent>ntopng</parent>
+  <prematch> [(\.+) -> </prematch>
+  <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Interface: (\.+)] [Severity: (\w+)] [(\w+)] [(\.+)] [(\.+) -> (\.+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,iface,severity,type,risk,srcip,dstip,log</order>
+</decoder>
+
+<!--
+Nov 3 19:03:11 80.151.56.127 ntopng[57859]: [2024-11-03T18:00:43Z] [Severity: Error] [System] [List Download Failed] [Stratosphere Lab] An error occurred while downloading list 'Stratosphere Lab': SSL peer certificate or SSH remote key was not OK
+-->
+<decoder name="ntopng-type3">
+  <parent>ntopng</parent>
+  <prematch>[System]</prematch>
+  <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Severity: (\w+)] [(\w+)] [(\.+)] [(\.+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,severity,type,risk,loc,log</order>
+</decoder>
+
+<!--
+Nov 3 15:28:11 80.151.56.127 ntopng[57859]: [2024-11-03T14:28:02Z] [Interface: igb1] [Severity: Error] [Host] [Score Threshold Exceeded] [192.168.2.148] [Released] Score exceeded by spzc-588de9 as Client [28989 > 5000]
+-->
+<decoder name="ntopng-type4">
+  <parent>ntopng</parent>
+  <prematch>[Score Threshold Exceeded]</prematch>
+  <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Interface: (\.+)] [Severity: (\w+)] [(\.+)] [(\.+)] [(\.+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,iface,severity,type,risk,ip,action,log</order>
+</decoder>
+
+<!--
+Nov 12 00:03:35 80.151.56.127 ntopng[77373]: [2024-11-11T23:02:18Z] [Interface: igb1] [Severity: Error] [Interface] [Slow Periodic Activity] [0] [Engaged] Periodic activity "5second" running for too long [more than 01:05] or executed too late (blocked in queue).
+-->
+<decoder name="ntopng-type5">
+  <parent>ntopng</parent>
+  <prematch>[Slow Periodic Activity]</prematch>
+  <regex>\s*[(\.+)]\s*[Interface: (\.+)]\s*[Severity: (\w+)] [(\.+)] [(\.+)] [(\.+)] [(\.+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,iface,severity,type,risk,num,action,log</order>
+</decoder>
+
+<!--
+Nov 14 04:10:18 80.151.56.127 ntopng[77373]: [2024-11-14T03:10:15Z] [Interface: tcp://*:5556c] [Severity: Emergency] [Interface] [No Traffic Activity] [1] [Released] No activity reported on tcp://*:5556c Network Interface.
+-->
+<decoder name="ntopng-type6">
+  <parent>ntopng</parent>
+  <prematch>[No Traffic Activity]</prematch>
+  <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Interface: (\.+)] [Severity: (\w+)] [(\.+)] [(\.+)] [(\.+)] [(\.+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,iface,severity,type,risk,num,action,log</order>
+</decoder>
