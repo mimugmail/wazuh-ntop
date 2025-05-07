@@ -1,0 +1,80 @@
+<!--
+  -  ntopng decoder
+  -  Author: Michael Muenz
+  -  Copyright (C) 2025, m.a.x. Informationstechnologie AG
+  -  The decoders and rules is a free software; you can redistribute it and/or modify it under the terms of GPLv3.
+-->
+
+<!-- Detect ntopng -->
+<group name="ntopng,syslog,">
+
+  <rule id="587000" level="3">
+    <decoded_as>ntopng</decoded_as>
+    <description>Undecoded ntopng log</description>
+  </rule>
+  
+<!-- Split by serverity -->  
+  <rule id="587101" level="3">
+    <if_sid>587000</if_sid>
+    <field name="event.severity_label">3</field>
+    <description>Low severity ntopng log</description>
+  </rule>
+  <rule id="587102" level="8">
+    <if_sid>587000</if_sid>
+    <field name="event.severity_label">4</field>
+    <description>High severity (Warning) ntopng log</description>
+  </rule>
+  <rule id="587103" level="8">
+    <if_sid>587000</if_sid>
+    <field name="event.severity_label">5</field>
+    <description>High severity (Error) ntopng log</description>
+  </rule>
+  <rule id="587104" level="10">
+    <if_sid>587000</if_sid>
+    <field name="event.severity_label">6</field>
+    <description>High severity (Critical) ntopng log</description>
+  </rule>
+  <rule id="587105" level="15">
+    <if_sid>587000</if_sid>
+    <field name="event.severity_label">7</field>
+    <description>High severity (Emergency) ntopng log</description>
+  </rule>
+  
+<!-- Couple of critical risk level -->  
+  <rule id="587201" level="10">
+    <if_sid>587000</if_sid>
+    <field name="event.action">Blacklisted Client Contact</field>
+    <description>Blacklisted Client IP found in ntopng log</description>
+  </rule>
+  <rule id="587202" level="12">
+    <if_sid>587000</if_sid>
+    <field name="event.action">Blacklisted Server Contact</field>
+    <description>Blacklisted Server IP found in ntopng log</description>
+  </rule>
+  <rule id="587203" level="12">
+    <if_sid>587000</if_sid>
+    <field name="event.action">Blacklisted Flow</field>
+    <description>Blacklisted host or domain is detected in ntopng log</description>
+  </rule>
+  <rule id="587204" level="12">
+    <if_sid>587000</if_sid>
+    <field name="event.action">Invalid DNS Query</field>
+    <description>Possibly malicious DNS query is detected in ntopng log</description>
+  </rule>
+  <rule id="587205" level="12">
+    <if_sid>587000</if_sid>
+    <field name="event.action">Malicious Fingerprint</field>
+    <description>Fingerprint of the TLS connection is considered suspicious in ntopng log</description>
+  </rule>
+  <rule id="587206" level="15">
+    <if_sid>587000</if_sid>
+    <field name="event.action">Malware Host Contacted</field>
+    <description>Client or server contacted a malware host detected in ntopng log</description>
+  </rule>
+  <rule id="587207" level="8">
+    <if_sid>587000</if_sid>
+    <field name="event.action">Old TLS Version</field>
+    <description>old (and possibly unsecure) TLS version detected in ntopng log</description>
+  </rule>
+
+</group>
