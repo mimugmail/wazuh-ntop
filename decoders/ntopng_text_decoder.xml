@@ -67,3 +67,24 @@ Nov 14 04:10:18 80.151.56.127 ntopng[77373]: [2024-11-14T03:10:15Z] [Interface: 
   <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Interface: (\.+)] [Severity: (\w+)] [(\.+)] [(\.+)] [(\.+)] [(\.+)]\s*(\.*)</regex>
   <order>timestamp-ntop,iface,severity,type,risk,num,action,log</order>
 </decoder>
+
+<!--
+May  8 14:57:16 10.24.80.199 ntopng[1779970]:  [2025-05-08T14:57:16Z]  [Interface: enp4s0] [Severity: Error] [MAC Address] [IP/MAC Reassoc/Spoofing] [00:1A:8C:F0:44:A0]  IP 10.24.66.3 changed association from 00:1A:8C:F0:44:A4 to 00:1A:8C:F0:44:A0: MITM (Man In The Middle) attack?
+-->
+<decoder name="ntopng-type7">
+  <parent>ntopng</parent>
+  <prematch>[IP/MAC Reassoc/Spoofing]</prematch>
+  <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Interface: (\.+)] [Severity: (\w+)] [(\.+)] [(\.+)] [(\.+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,iface,severity,type,risk,mac,log</order>
+</decoder>
+
+<!--
+May  8 15:09:24 10.24.80.199 ntopng[1779970]:  [2025-05-08T15:09:22Z]  [Interface: enp4s0] [Severity: Error] [Host] [Scan Detected] [10.24.66.70] [Released] 10.24.66.70 is a scanner [63 > 32 scan attempts]
+-->
+<decoder name="ntopng-type8">
+  <parent>ntopng</parent>
+  <prematch>[Scan Detected]</prematch>
+  <regex>\s*[(\d\d\d\d-\d\d-\d\d\w\d\d:\d\d:\d\d\w)]\s*[Interface: (\.+)] [Severity: (\w+)] [(\.+)] [(\.+)] [(\.+)] [(\.+)]\s*(\.*)</regex>
+  <order>timestamp-ntop,iface,severity,type,risk,ip,action,log</order>
+</decoder>
+
